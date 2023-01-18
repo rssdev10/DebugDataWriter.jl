@@ -15,6 +15,8 @@ Minimal use case:
 
     id = get_debug_id("Some query")
     @debug_output id "some complex structure" ones(2, 3)
+    @debug_output id "some complex structure" ones(2, 3) :HTML
+    @debug_output id "some complex structure" ones(2, 3) :TXT
 
     # the lambda is executed when enable_dump == true
     @debug_output id "some data structure as a lambda" begin
