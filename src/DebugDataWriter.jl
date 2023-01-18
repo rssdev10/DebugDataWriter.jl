@@ -22,7 +22,7 @@ struct DdbContext
 end
 
 GLOBAL_DDW_CONFIG = DdwConfig(
-    true,
+    false,
     false,
     "debug_out",
     ((io, data),) -> JSON.write(io, data, 2),
