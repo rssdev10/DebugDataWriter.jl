@@ -1,0 +1,16 @@
+name = "DebugDataWriter"
+uuid = "810e33c6-efd6-4462-86b1-f71ae88af720"
+authors = ["Roman S. Samarev <samarev@acm.org> and contributors"]
+version = "0.1.0"
+
+[deps]
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+
+[compat]
+julia = "1"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
