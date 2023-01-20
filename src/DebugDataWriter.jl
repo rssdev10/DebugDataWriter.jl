@@ -119,7 +119,7 @@ debug_output(debug_id::AbstractString, code_pos,
 
 macro debug_output(debug_id, title, data_func)
     code_pos = string(__source__)
-    return :(debug_output($(esc(debug_id)), $code_pos, $title, $data_func))
+    return :(debug_output($(esc(debug_id)), $code_pos, $(esc(title)), $(esc(data_func))))
 end
 
 macro debug_output(debug_id, title, data_func, fmt)
@@ -139,7 +139,7 @@ macro debug_output(debug_id, title, data_func, fmt)
     end
 
     # code_pos = string(@__FILE__, ":", @__LINE__)
-    return :(debug_output($(esc(debug_id)), $code_pos, $title, $data_func, fmt=$fmt_expr))
+    return :(debug_output($(esc(debug_id)), $code_pos, $(esc(title)), $(esc(data_func)), fmt=$fmt_expr))
 end
 
 end
