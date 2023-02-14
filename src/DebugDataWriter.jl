@@ -54,7 +54,7 @@ const GLOBAL_DDW_CONFIG = DdwConfig(
 config() = GLOBAL_DDW_CONFIG
 
 get_file_name(title) =
-    replace(title, r"[\s,]+" => "_") |> fn -> fn[1:min(100, end)]
+    replace(title, r"\W+" => "_") |> fn -> fn[1:min(100, end)]
 
 function get_debug_id(title::String)
     cfg = config()
