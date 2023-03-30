@@ -7,9 +7,20 @@ using Dates
 export get_debug_id, debug_output, @debug_output, config
 
 mutable struct DdwConfig
+    """
+    Enable saving dumps of data structures.
+    """
     enable_dump::Bool
+
+    """
+    Enable adding trace info with the `@info` macro and output into stdout.
+    Each record contains links to the source code and to the saved data file. 
+    """
     enable_log::Bool
 
+    """
+    Output path for new directories and files 
+    """
     out_dir::String
 
     default_writer::Function
@@ -18,6 +29,10 @@ mutable struct DdwConfig
 
     format_writers::Dict{Symbol,Function}
 
+    """
+    Use full ISO date/time format (default).
+    Or just HEX representaion of time in seconds.
+    """
     path_format_fulltime::Bool
 end
 
@@ -59,6 +74,12 @@ truncate_string(str, limit) =
 get_file_name(title) =
     replace(title, r"\W+" => "_") |> fn -> truncate_string(fn, 100)
 
+"""
+    get_debug_id(title)
+
+Generates `id` based on current date/time and the `title`.
+`id` is used as a name of further output sub-directory of `debug_out`.
+"""
 function get_debug_id(title::String)
     cfg = config()
 
@@ -80,6 +101,11 @@ function get_debug_id(title::String)
     return prefix
 end
 
+"""
+    get_debug_id()
+
+Generates `id` based on current date/time only.
+"""
 get_debug_id() = get_debug_id("")
 
 function debug_output(data_getter::Function, debug_id::AbstractString,
@@ -120,11 +146,35 @@ debug_output(debug_id::AbstractString, code_pos,
     title::AbstractString, data_getter::Function; fmt=:JSON) =
     debug_output(data_getter, debug_id, code_pos, title, fmt)
 
+"""
+    @debug_output debug_id title data_or_func
+
+    `debug_id` in fact is a name of output sub-directory
+
+    `title` is used as a name of the output file in that directory
+    to distinguish output data. All non alpha-num symbols are translated
+    into the `_` character.
+
+    `data_or_func`. The data for debug output might be provided as a literal,
+    a variable or a lambda function. The lambda-function will be activated
+    if only `enable_dump` is true.    
+"""
 macro debug_output(debug_id, title, data_func)
     code_pos = string(__source__)
     return :(debug_output($(esc(debug_id)), $code_pos, $(esc(title)), $(esc(data_func))))
 end
 
+"""
+    @debug_output debug_id title data_or_func fmt
+
+
+    Same as [`@debug_output debug_id title data_or_func`](@ref).
+    Additional `fmt` argument specifies an output format. Default is JSON. 
+    Implemented formats are JSON with JSON.jl, HTML and TXT with PrettyTables.jl,
+    and SVG, XML as raw data output.
+
+    See details of the `FORMAT_WRITERS` dictionary
+"""
 macro debug_output(debug_id, title, data_func, fmt)
     code_pos = string(__source__)
 

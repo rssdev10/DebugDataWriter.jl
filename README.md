@@ -1,5 +1,7 @@
 # DebugDataWriter
 
+[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaLang.github.io/DebugDataWriter.jl/stable)
+
 The package provides saving of debug data into separate files. 
 
 Minimal use case:
