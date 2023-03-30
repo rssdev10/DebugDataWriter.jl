@@ -1,6 +1,6 @@
 # DebugDataWriter
 
-[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaLang.github.io/DebugDataWriter.jl/stable)
+[![](https://img.shields.io/badge/docs-stable-blue.svg)](https://rssdev10.github.io/DebugDataWriter.jl/stable)
 
 The package provides saving of debug data into separate files. 
 
