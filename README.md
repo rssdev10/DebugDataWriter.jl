@@ -1,6 +1,9 @@
 # DebugDataWriter
 
 [![](https://img.shields.io/badge/docs-stable-blue.svg)](https://rssdev10.github.io/DebugDataWriter.jl/stable)
+[![](https://img.shields.io/badge/docs-dev-blue.svg)](https://rssdev10.github.io/DebugDataWriter.jl/dev)
+
+GitHub Actions : [![Build Status](https://github.com/rssdev10/DebugDataWriter.jl/workflows/CI/badge.svg)](https://github.com/rssdev10/DebugDataWriter.jl/actions?query=workflow%3ACI+branch%3Amaster)
 
 The package provides saving of debug data into separate files. 
 
