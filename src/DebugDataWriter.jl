@@ -4,7 +4,8 @@ using JSON
 using PrettyTables
 using Dates
 
-export get_debug_id, debug_output, @debug_output, config
+export get_debug_id, debug_output, @debug_output, config,
+    @ddw_dout, @ddw_get_id
 
 mutable struct DdwConfig
     """
@@ -193,6 +194,63 @@ macro debug_output(debug_id, title, data_func, fmt)
 
     # code_pos = string(@__FILE__, ":", @__LINE__)
     return :(debug_output($(esc(debug_id)), $code_pos, $(esc(title)), $(esc(data_func)), fmt=$fmt_expr))
+end
+
+# Zero cost mode
+
+"""
+Do nothing if `DEBUG_OUTPUT` environment variable is not defined
+Enables debug mode if `DEBUG_OUTPUT` contains `log` or `dump` 
+"""
+function is_debug_output_enabled()
+    mode = get(ENV, "DEBUG_OUTPUT", nothing)
+
+    isnothing(mode) && return false
+
+    contains(mode, "log") && (config().enable_log = true)
+    contains(mode, "dump") && (config().enable_dump = true)
+
+    return true
+end
+
+"""
+Get `debug_id`. 
+The `debug_id` is used to merge multiple outputs into a single directory
+with a name starting with `debug_id`.
+"""
+macro ddw_get_id(title)
+    is_debug_output_enabled() || return :("")
+
+    return :(get_debug_id($(esc(title))))
+end
+
+macro ddw_get_id()
+    return :(@ddw_get_id(""))
+end
+
+"""
+Do debug output
+`debug_id` - name of the directory for the `log` mode output
+`title` - name of the file inside the output directory
+`data_func` - source data function
+"""
+macro ddw_dout(debug_id, title, data_func)
+    is_debug_output_enabled() || return
+
+    return :(@debug_output($(esc(debug_id)), $(esc(title)), $(esc(data_func))))
+end
+
+"""
+Do debug output
+`debug_id` - name of the directory for the `log` mode output
+`title` - name of the file inside the output directory
+`data_func` - source data function
+`fmt` - format of ouput. See `FORMAT_WRITERS` constant.
+"""
+macro ddw_dout(debug_id, title, data_func, fmt)
+    is_debug_output_enabled() || return
+
+    return :(@debug_output($(esc(debug_id)), $(esc(title)), $(esc(data_func)), $fmt))
 end
 
 end
