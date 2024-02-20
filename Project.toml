@@ -1,7 +1,7 @@
 name = "DebugDataWriter"
 uuid = "810e33c6-efd6-4462-86b1-f71ae88af720"
 authors = ["Roman S. Samarev <samarev@acm.org> and contributors"]
-version = "0.1.2"
+version = "0.1.3"
 
 [deps]
 Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"

@@ -51,3 +51,50 @@ using Test
 
     # @macroexpand @debug_output debug_id "some complex structure" ones(2, 3)
 end
+
+@testset "DDW zero cost mode" begin
+    @testset "Check configuration setup" begin
+        config().enable_log = false
+        config().enable_dump = false
+
+        ENV["DEBUG_OUTPUT"] = "log"
+        DebugDataWriter.is_debug_output_enabled()
+        @test config().enable_log
+
+        ENV["DEBUG_OUTPUT"] = "log | dump"
+        DebugDataWriter.is_debug_output_enabled()
+        @test config().enable_dump
+    end
+
+    @testset "zero cost disabled" begin
+        ENV["DEBUG_OUTPUT"] = "log | dump"
+
+        @test "" !== @macroexpand @ddw_get_id
+        @test "" !== @macroexpand @ddw_get_id "test"
+        @test nothing !== @macroexpand @ddw_dout id "some structure as lambda" () -> zeros(5, 2)
+        @test nothing !== @macroexpand @ddw_dout id "text as a text" "ones(2, 3)" :TXT
+
+        eval(Meta.parseall("""
+            id = @ddw_get_id
+            @test !isempty(id)
+
+            id = @ddw_get_id "test"
+            @test !isempty(id)
+
+            @ddw_dout id "some structure as lambda" begin
+                zeros(5, 2)
+            end
+            @ddw_dout id "text as a text" "ones(2, 3)" :TXT
+        """))
+    end
+
+    @testset "zero cost enabled" begin
+        delete!(ENV, "DEBUG_OUTPUT")
+
+        @test "" == @macroexpand @ddw_get_id
+        @test "" == @macroexpand @ddw_get_id "test"
+
+        @test nothing === @macroexpand @ddw_dout id "some structure as lambda" () -> zeros(5, 2)
+        @test nothing === @macroexpand @ddw_dout id "text as a text" "ones(2, 3)" :TXT
+    end
+end
