@@ -71,8 +71,8 @@ end
 
         @test "" !== @macroexpand @ddw_get_id
         @test "" !== @macroexpand @ddw_get_id "test"
-        @test nothing !== @macroexpand @ddw_dout id "some structure as lambda" () -> zeros(5, 2)
-        @test nothing !== @macroexpand @ddw_dout id "text as a text" "ones(2, 3)" :TXT
+        @test nothing !== @macroexpand @ddw_out id "some structure as lambda" () -> zeros(5, 2)
+        @test nothing !== @macroexpand @ddw_out id "text as a text" "ones(2, 3)" :TXT
 
         eval(Meta.parseall("""
             id = @ddw_get_id
@@ -81,10 +81,10 @@ end
             id = @ddw_get_id "test"
             @test !isempty(id)
 
-            @ddw_dout id "some structure as lambda" begin
+            @ddw_out id "some structure as lambda" begin
                 zeros(5, 2)
             end
-            @ddw_dout id "text as a text" "ones(2, 3)" :TXT
+            @ddw_out id "text as a text" "ones(2, 3)" :TXT
         """))
     end
 
@@ -94,7 +94,7 @@ end
         @test "" == @macroexpand @ddw_get_id
         @test "" == @macroexpand @ddw_get_id "test"
 
-        @test nothing === @macroexpand @ddw_dout id "some structure as lambda" () -> zeros(5, 2)
-        @test nothing === @macroexpand @ddw_dout id "text as a text" "ones(2, 3)" :TXT
+        @test nothing === @macroexpand @ddw_out id "some structure as lambda" () -> zeros(5, 2)
+        @test nothing === @macroexpand @ddw_out id "text as a text" "ones(2, 3)" :TXT
     end
 end
