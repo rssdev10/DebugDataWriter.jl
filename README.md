@@ -48,8 +48,24 @@ Example:
     # id = @ddw_get_id  # this call gives a default name
     id = @ddw_get_id "test" # id will have this prefix
 
-    @ddw_dout id "some structure as lambda" begin
+    @ddw_out id "some structure as lambda" begin
         zeros(5, 2)
     end
-    @ddw_dout id "text as a text" "ones(2, 3)" :TXT
+    @ddw_out id "text as a text" "ones(2, 3)" :TXT
 ```
+
+## Using the log output in VS Code
+
+If full debug output is enabled, the output to the console will look like this.
+```txt
+┌ Info: #= /Users/.../DebugDataWriter/test/runtests.jl:48 =#
+│   debug_id = "20230330-084712-012_Another_query"
+│   title = "text as a text"
+│   data = "ones(2, 3)"
+└   details_fn = "debug_out/20230330-084712-012_Another_query/text_as_a_text.txt"
+```
+
+If you are using VS Code, simply click on this link. VS Code will open the line of code where this message/data was generated.
+
+
+Additionally, if you are using that option, just click on `debug_out/20230330-084712-012_Another_query/text_as_a_text.txt` to open that in an editor.
