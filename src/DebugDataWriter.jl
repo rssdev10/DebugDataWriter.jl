@@ -1,6 +1,6 @@
 module DebugDataWriter
 
-using JSON
+using JSON3
 using PrettyTables
 using Dates
 
@@ -41,8 +41,8 @@ struct DdbContext
     prefix::String
 end
 
-const FORMAT_WRITERS = Dict(
-    :JSON => (io, data) -> JSON.print(io, data, 2),
+const FORMAT_WRITERS = Dict{Symbol,Function}(
+    :JSON => (io, data) -> JSON3.pretty(io, data, JSON3.AlignmentContext(alignment=:Left, indent=2)),
     :HTML => (io, data) -> begin
         PrettyTables.pretty_table(io, data; backend=Val(:html), standalone=true)
     end,
